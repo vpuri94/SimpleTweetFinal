@@ -19,17 +19,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_login);
 		ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
-
 		View view = binding.getRoot();
 		setContentView(view);
-
 		final SampleModel sampleModel = new SampleModel();
 		sampleModel.setName("CodePath");
-
 		sampleModelDao = ((TwitterApp) getApplicationContext()).getMyDatabase().sampleModelDao();
-
 		AsyncTask.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -50,7 +45,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		Log.i("fdjfs", "login success");
 		 Intent i = new Intent(this, TimelineActivity.class);
 		 startActivity(i);
 	}

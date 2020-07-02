@@ -34,22 +34,15 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_compose);
         ActivityComposeBinding binding = ActivityComposeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         client = TwitterApp.getRestClient(this);
-
-//        etCompose = findViewById(R.id.etCompose);
         etCompose = binding.etCompose;
-
-//        btnTweet = findViewById(R.id.btnTweet);
         btnTweet = binding.btnTweet;
-
         etCount = binding.etCount;
 
-//        etCount = findViewById(R.id.etCount);
 
         etCompose.addTextChangedListener(new TextWatcher() {
             @Override

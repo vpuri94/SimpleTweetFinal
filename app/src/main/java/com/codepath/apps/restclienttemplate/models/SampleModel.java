@@ -40,12 +40,10 @@ public class SampleModel {
 		}
 	}
 
-	// Getters
 	public String getName() {
 		return name;
 	}
 
-	// Setters
 	public void setId(Long id) {
 		this.id = id;
 	}

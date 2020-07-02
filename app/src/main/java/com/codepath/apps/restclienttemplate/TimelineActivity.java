@@ -41,7 +41,6 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_timeline);
         ActivityTimelineBinding binding = ActivityTimelineBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -50,7 +49,6 @@ public class TimelineActivity extends AppCompatActivity {
 
 
         // Swipe to refresh features
-//        swipeContainer = findViewById(R.id.swipeContainer);
         swipeContainer = binding.swipeContainer;
 
         // Configure the refreshing colors
@@ -61,13 +59,11 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.i(TAG, "fetching new data!");
                 populateHomeTimeline();
             }
         });
 
         // Find the recycler view
-//        rvTweets = findViewById(R.id.rvTweets);
         rvTweets = binding.rvTweets;
 
         // Init the list of tweets and adapter
@@ -82,7 +78,6 @@ public class TimelineActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.i(TAG, "onLoadMore: " + page);
                 loadMoreData();
             }
 
@@ -98,7 +93,6 @@ public class TimelineActivity extends AppCompatActivity {
         client.getNextPageOfTweets(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess! for loadMoreData");
                 //  --> Deserialize and construct new model objects from the API response
                 JSONArray jsonArray = json.jsonArray;
                 try {
@@ -113,7 +107,6 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure for loadMoreData!", throwable);
 
             }
         }, tweets.get(tweets.size() - 1).id);
@@ -133,7 +126,7 @@ public class TimelineActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.compose){
             // Compose icon  has been selected
 
-            // NAvigate to the compose activity
+            // Navigate to the compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
             return true;
@@ -160,21 +153,18 @@ public class TimelineActivity extends AppCompatActivity {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess!");
                 JSONArray jsonArray =  json.jsonArray;
                 try {
                     adapter.clear();
                     adapter.addAll(Tweet.fromJsonArray(jsonArray));
-                    // Now we call setRefreshing(false) to signal refresh has finished
+                    // Signal refresh finished
                     swipeContainer.setRefreshing(false);
                 } catch (JSONException e) {
-                    Log.e(TAG, "Json exception", e);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure!", throwable);
             }
         });
     }

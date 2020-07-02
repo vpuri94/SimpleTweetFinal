@@ -11,5 +11,5 @@ public abstract class MyDatabase extends RoomDatabase {
     public abstract SampleModelDao sampleModelDao();
 
     // Database name to be used
-    public static final String NAME = "MyDataBase";
+    protected static final String NAME = "MyDataBase";
 }
