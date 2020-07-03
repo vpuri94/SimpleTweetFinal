@@ -65,16 +65,13 @@ public class TimelineActivity extends AppCompatActivity {
 
         // Find the recycler view
         rvTweets = binding.rvTweets;
-
         // Init the list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         // Recycler view setup: layout manager and the adapter
         rvTweets.setLayoutManager(layoutManager);
         rvTweets.setAdapter(adapter);
-
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -85,20 +82,20 @@ public class TimelineActivity extends AppCompatActivity {
 
         // Adds the scroll listener to RecyclerView
         rvTweets.addOnScrollListener(scrollListener);
-
         populateHomeTimeline();
     }
+
     private void loadMoreData() {
         // Send an API request to retrieve appropriate paginated data
         client.getNextPageOfTweets(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                //  --> Deserialize and construct new model objects from the API response
+                // Deserialize and construct new model objects from the API response
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     List<Tweet> tweets = Tweet.fromJsonArray(jsonArray);
-                    //  --> Append the new data objects to the existing set of items inside the array of items
-                    //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+                    // Append the new data objects to the existing set of items inside the array of items
+                    // Notify the adapter of the new items made with `notifyItemRangeInserted()`
                     adapter.addAll(tweets);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -110,7 +107,6 @@ public class TimelineActivity extends AppCompatActivity {
 
             }
         }, tweets.get(tweets.size() - 1).id);
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
 
     }
 
@@ -126,7 +122,7 @@ public class TimelineActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.compose){
             // Compose icon  has been selected
 
-            // Navigate to the compose activity
+            // Navigate to the compose activity w/ Explicit intent
             Intent intent = new Intent(this, ComposeActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
             return true;

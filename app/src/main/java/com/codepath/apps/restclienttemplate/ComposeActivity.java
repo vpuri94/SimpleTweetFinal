@@ -52,6 +52,7 @@ public class ComposeActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Physically displays how many characters are left when typing a tweet in red
                 int countLeft = MAX_TWEET_LENGTH - s.length();
                 etCount.setText(countLeft + " many characters left");
 
@@ -68,6 +69,8 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String tweetContent = etCompose.getText().toString();
+                // Error check to make sure when we click compose, that the tweet meets length
+                // requirement sof twitter
                 if(tweetContent.isEmpty()){
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
@@ -77,7 +80,7 @@ public class ComposeActivity extends AppCompatActivity {
                     return;
                 }
                 Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
-                //Make an API call to Twitter to publish the tweet
+                // Make an API call to Twitter to publish the tweet
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -89,8 +92,10 @@ public class ComposeActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             // Pass relevant data back as a result
                             intent.putExtra("tweet", Parcels.wrap(tweet));
-                            setResult(RESULT_OK, intent); // set result code and bundle data for response
-                            finish(); // closes the activity, pass data to parent
+                            // set result code and bundle data for response
+                            setResult(RESULT_OK, intent);
+                            // closes the activity, pass data to parent
+                            finish();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -98,7 +103,6 @@ public class ComposeActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure to publish tweet", throwable);
                     }
                 });
 

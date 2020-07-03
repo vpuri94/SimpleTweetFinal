@@ -16,6 +16,7 @@ import java.util.Locale;
 @Parcel
 public class Tweet {
 
+    // Various fields of a Twitter tweet
     public String body;
     public String createdAt;
     public User user;
@@ -26,12 +27,14 @@ public class Tweet {
     public Tweet(){}
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
+        // Set all the fields of each tweet based on JSON response
         Tweet tweet = new Tweet();
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = getRelativeTimeAgo(jsonObject.getString("created_at"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.id = jsonObject.getLong("id");
 
+        // Display media (photos) on a timeline view
         JSONObject entities = jsonObject.getJSONObject("entities");
         if (entities.has("media"))  {
             JSONArray medias = entities.getJSONArray("media");
@@ -45,6 +48,7 @@ public class Tweet {
         return tweet;
     }
 
+    // Setup a list of tweets to display on RecyclerView
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
         List<Tweet> tweets = new ArrayList<>();
         for (int x = 0; x < jsonArray.length(); x++){
@@ -52,12 +56,12 @@ public class Tweet {
         }
         return tweets;
     }
-    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+
+    // This allows us to get the date and time of the tweet/when it was posted
     public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
-
         String relativeDate = "";
         try {
             long dateMillis = sf.parse(rawJsonDate).getTime();

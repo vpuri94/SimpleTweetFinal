@@ -7,6 +7,7 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
 
+    // Various fields of the user when displaying info about each tweet
     public String name;
     public String screenName;
     public String profileImageUrl;
